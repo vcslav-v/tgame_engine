@@ -12,18 +12,30 @@ services:
         intranet:
           aliases:
             - bot-app
-        
+
     nginx:
-      image: nginx:1.15
+      image: nginx:latest
       container_name: nginx
+      restart: always
       volumes:
         - ./default.conf:/etc/nginx/conf.d/default.conf
+        - ./dhparam:/etc/nginx/dhparam
+        - ./certbot/conf/:/etc/nginx/ssl/
+        - ./certbot/data:/usr/share/nginx/html/letsencrypt
       ports:
         - 5000:5000
       networks:
         - intranet
       depends_on:
         - bot
+      
+    certbot:
+       image: certbot/certbot:latest
+       command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email email@email.com --agree-tos --no-eff-email -d domain.ru
+       volumes:
+         - ./certbot/conf/:/etc/letsencrypt
+         - ./certbot/logs/:/var/log/letsencrypt
+         - ./certbot/data:/usr/share/nginx/html/letsencrypt
 
 networks: 
   intranet:
