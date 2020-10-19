@@ -1,0 +1,29 @@
+version: "3"
+
+services:    
+    bot:
+      build: tgame_engine/
+      container_name: bot
+      command: make run
+      environment:
+        - APP_URL=
+        - BOT_TOKEN=
+      networks:
+        intranet:
+          aliases:
+            - bot-app
+        
+    nginx:
+      image: nginx:1.15
+      container_name: nginx
+      volumes:
+        - ./default.conf:/etc/nginx/conf.d/default.conf
+      ports:
+        - 5000:5000
+      networks:
+        - intranet
+      depends_on:
+        - bot
+
+networks: 
+  intranet:
