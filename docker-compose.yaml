@@ -9,6 +9,8 @@ services:
         - APP_URL=
         - BOT_TOKEN=
         - SQLALCHEMY_DATABASE_URI=
+        - DB=db
+        - DB_PASSWORD=
       volumes:
         - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
       restart: always
