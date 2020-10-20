@@ -17,6 +17,5 @@ async def getMessage(message):
     return message, 200
 
 url = config.APP_URL+config.BOT_TOKEN
-print(url)
 bot.remove_webhook()
 bot.set_webhook(url)
