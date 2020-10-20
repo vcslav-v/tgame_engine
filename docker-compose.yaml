@@ -4,7 +4,7 @@ services:
     bot:
       build: tgame_engine/
       container_name: bot
-      command: poetry run gunicorn app:run --bind 0.0.0.0:5000 -w 1 
+      command: poetry run gunicorn run:app --bind 0.0.0.0:5000 -w 1 
       environment:
         - APP_URL=
         - BOT_TOKEN=
