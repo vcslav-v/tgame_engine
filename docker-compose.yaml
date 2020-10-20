@@ -4,10 +4,13 @@ services:
     bot:
       build: tgame_engine/
       container_name: bot
-      command: poetry run gunicorn app:app --bind 0.0.0.0:5000 -w 4 -k uvicorn.workers.UvicornWorker
+      command: poetry run gunicorn app:run --bind 0.0.0.0:5000 -w 1 
       environment:
         - APP_URL=
         - BOT_TOKEN=
+        - SQLALCHEMY_DATABASE_URI=
+      volumes:
+        - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
       networks:
         intranet:
           aliases:
@@ -24,7 +27,7 @@ services:
         - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
       ports:
         - 80:80
-        - 5000:5000
+        - 443:443
       networks:
         - intranet
       depends_on:
