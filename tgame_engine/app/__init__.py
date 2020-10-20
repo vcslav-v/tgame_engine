@@ -19,9 +19,8 @@ def getMessage():
     return 'ok', 200
 
 
-url = 'https://' + config.APP_URL + config.BOT_TOKEN
-bot.remove_webhook()
-bot.set_webhook(url)
-
 if __name__ == "__main__":
+    url = 'https://' + config.APP_URL + config.BOT_TOKEN
+    bot.remove_webhook()
+    bot.set_webhook(url)
     app.run(host="0.0.0.0", port=5000)
