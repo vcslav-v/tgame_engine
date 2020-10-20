@@ -6,12 +6,9 @@ authors = ["vcslav-v <vcslav.v@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-fastapi = "^0.61.1"
 gunicorn = "^20.0.4"
-uvicorn = "^0.12.1"
-uvloop = "^0.14.0"
-httptools = "^0.1.1"
 pyTelegramBotAPI = "^3.7.3"
+flask = "^1.1.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
