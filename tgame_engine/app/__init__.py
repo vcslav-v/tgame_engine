@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 from app import tgame_bot
 
+
 @app.route("/"+config.BOT_TOKEN, methods=['POST'])
 def getMessage():
     bot.process_new_updates([
@@ -16,6 +17,7 @@ def getMessage():
             )
     ])
     return 'ok', 200
+
 
 url = 'https://' + config.APP_URL + config.BOT_TOKEN
 bot.remove_webhook()
