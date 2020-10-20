@@ -11,6 +11,7 @@ services:
         - SQLALCHEMY_DATABASE_URI=
       volumes:
         - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
+      restart: always
       networks:
         intranet:
           aliases:
@@ -34,12 +35,22 @@ services:
         - bot
       
     certbot:
-       image: certbot/certbot:latest
-       command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email email@email.com --agree-tos --no-eff-email -d domain.ru
-       volumes:
-         - ./nginx/certbot/conf/:/etc/letsencrypt
-         - ./nginx/certbot/logs/:/var/log/letsencrypt
-         - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+      image: certbot/certbot:latest
+      command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email email@email.com --agree-tos --no-eff-email -d domain.ru
+      volumes:
+        - ./nginx/certbot/conf/:/etc/letsencrypt
+        - ./nginx/certbot/logs/:/var/log/letsencrypt
+        - ./nginx/certbot/data:/usr/share/nginx/html/letsencrypt
+
+    db:
+      image: postgres:latest
+      environment:
+          - POSTGRES_PASSWORD=
+      volumes:
+        - ./db_data/:/var/lib/postgresql/data
+      networks:
+        - intranet
+      restart: always
 
 networks: 
   intranet:
