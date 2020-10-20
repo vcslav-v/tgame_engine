@@ -22,4 +22,4 @@ def getMessage():
 url = 'https://' + config.APP_URL + config.BOT_TOKEN
 bot.remove_webhook()
 bot.set_webhook(url)
-app.run(host="0.0.0.0", port=int(5000))
+
