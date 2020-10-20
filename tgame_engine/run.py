@@ -1,2 +1,3 @@
 from app import app
-app.run()
+if if __name__ == "__main__":
+    app.run()
