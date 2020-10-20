@@ -9,6 +9,7 @@ app = FastAPI()
 
 @app.post('/'+config.BOT_TOKEN)
 async def getMessage(message):
+    print(message)
     bot.process_new_updates([
             telebot.types.Update.de_json(
                 message
@@ -16,6 +17,6 @@ async def getMessage(message):
     ])
     return message, 200
 
-url = config.APP_URL+config.BOT_TOKEN
+url = 'https://' + config.APP_URL + config.BOT_TOKEN
 bot.remove_webhook()
 bot.set_webhook(url)
