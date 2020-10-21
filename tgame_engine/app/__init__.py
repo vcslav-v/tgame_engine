@@ -1,5 +1,6 @@
 """Bot app."""
 import telebot
+import json
 from flask import Flask, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
@@ -13,6 +14,9 @@ session = sessionmaker(bind=engine)()
 
 from app import tgame_bot
 
+
+with open('story.json') as json_file:
+    story = json.load(json_file)
 
 @app.route("/"+config.BOT_TOKEN, methods=['POST'])
 def getMessage():

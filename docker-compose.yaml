@@ -13,6 +13,7 @@ services:
         - DB_PASSWORD=
       volumes:
         - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
+        - ./story.json:/usr/src/app/tgame/story.json
       depends_on:
         - db
       restart: always

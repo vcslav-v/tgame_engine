@@ -19,4 +19,6 @@ def get_user(telegram_id: int) -> models.User:
     if user:
         return user
     user = models.User(telegram_id=telegram_id)
+    session.add(user)
+    session.commit()
     return user
