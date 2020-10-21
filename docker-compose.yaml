@@ -13,6 +13,8 @@ services:
         - DB_PASSWORD=
       volumes:
         - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
+      depends_on:
+        - db
       restart: always
       networks:
         intranet:
