@@ -14,6 +14,6 @@ class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)  # noqa WPS125
     telegram_id = Column(Integer)
-    story_branch = Column(String, default=config['start']['branch'])
+    story_branch = Column(String, default=config['start']['brunch'])
     point = Column(Integer, default=config['start']['point'])
     last_activity = Column(DateTime, default=datetime.utcnow)
