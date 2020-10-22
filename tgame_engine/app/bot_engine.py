@@ -11,6 +11,8 @@ def send_story_message(user: models.User):
     Parameters:
         user: player whom send story
     """
+    print(user.story_branch)
+    print(user.point)
     message = story[user.story_branch][user.point]
     if message['img']:
         bot.send_photo(
