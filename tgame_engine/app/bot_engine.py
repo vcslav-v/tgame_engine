@@ -1,7 +1,8 @@
 """Story engine."""
 from telebot import types
 
-from app import bot, models, story
+from app import bot, models
+from app.story import story
 
 
 def send_story_message(user: models.User):

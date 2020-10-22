@@ -15,10 +15,6 @@ session = sessionmaker(bind=engine)()
 from app import bot_routers
 
 
-with open('story.json') as json_file:
-    story = json.load(json_file)
-
-
 @app.route("/"+config.BOT_TOKEN, methods=['POST'])
 def getMessage():
     bot.process_new_updates([
