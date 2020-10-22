@@ -42,6 +42,8 @@ services:
     certbot:
       image: certbot/certbot:latest
       command: certonly --webroot --webroot-path=/usr/share/nginx/html/letsencrypt --email email@email.com --agree-tos --no-eff-email -d domain.ru
+      depends_on:
+        - nginx
       volumes:
         - ./nginx/certbot/conf/:/etc/letsencrypt
         - ./nginx/certbot/logs/:/var/log/letsencrypt

@@ -12,11 +12,12 @@ app = Flask(__name__)
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 session = sessionmaker(bind=engine)()
 
-from app import tgame_bot
+from app import bot_routers
 
 
 with open('story.json') as json_file:
     story = json.load(json_file)
+
 
 @app.route("/"+config.BOT_TOKEN, methods=['POST'])
 def getMessage():
