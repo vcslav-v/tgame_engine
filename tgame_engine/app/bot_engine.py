@@ -1,16 +1,29 @@
 """Story engine."""
 from telebot import types
 
-from app import bot, models, story
+from app import bot, models, story, session
 
 
-def send_story_message(user: models.User):
-    """Send story message.
+def tell_story(user: models.User, user_answer: str = None):
+    """Game flow.
 
     Parameters:
         user: player whom send story
     """
-    message = story.get_message(user.point)
+    point = story.get_point(user, user_answer)
+    send_story_message(user, point)
+    set_story_point(user, point)
+
+
+def send_story_message(user: models.User, point: str) -> int:
+    """Send story message.
+
+    Parameters:
+        user: player whom send story
+        point: story point
+    """
+    message = story.get_message(user, point)
+
     if message['img']:
         bot.send_photo(
             chat_id=user.telegram_id,
@@ -49,3 +62,15 @@ def make_keyboard(buttons: dict) -> types.ReplyKeyboardMarkup:
     for button in buttons:
         keyboard.add(button)
     return keyboard
+
+
+def set_story_point(user: models.User, point: str):
+    """Remember where user in story.
+
+    Parameters:
+        user: player
+        point: story point
+    """
+    user.point = int(point)
+    session.add(user)
+    session.commit()

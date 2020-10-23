@@ -14,6 +14,7 @@ services:
       volumes:
         - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
         - ./story.json:/usr/src/app/tgame/story.json
+        - ./answ.json:/usr/src/app/tgame/answ.json
       depends_on:
         - db
       restart: always
