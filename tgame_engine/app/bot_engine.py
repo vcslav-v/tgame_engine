@@ -1,8 +1,7 @@
 """Story engine."""
 from telebot import types
 
-from app import bot, models
-from app.story import story
+from app import bot, models, story
 
 
 def send_story_message(user: models.User):
@@ -11,7 +10,7 @@ def send_story_message(user: models.User):
     Parameters:
         user: player whom send story
     """
-    message = story[user.story_branch][user.point]
+    message = story.get_message(user.point)
     if message['img']:
         bot.send_photo(
             chat_id=user.telegram_id,
