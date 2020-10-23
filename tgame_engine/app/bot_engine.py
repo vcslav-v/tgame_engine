@@ -15,25 +15,25 @@ def send_story_message(user: models.User):
         bot.send_photo(
             chat_id=user.telegram_id,
             photo=message['img'],
-            reply_markup=make_keyboard(story['answers']),
+            reply_markup=make_keyboard(message['answers']),
         )
     if message['audio']:
         bot.send_voice(
             chat_id=user.telegram_id,
             voice=message['audio'],
-            reply_markup=make_keyboard(story['answers']),
+            reply_markup=make_keyboard(message['answers']),
         )
     if message['document']:
         bot.send_document(
             chat_id=user.telegram_id,
             data=message['document'],
-            reply_markup=make_keyboard(story['answers']),
+            reply_markup=make_keyboard(message['answers']),
         )
     if message['text']:
         bot.send_message(
             chat_id=user.telegram_id,
             text=message['text'],
-            reply_markup=make_keyboard(story['answers']),
+            reply_markup=make_keyboard(message['answers']),
         )
 
 
