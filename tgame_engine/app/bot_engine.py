@@ -11,14 +11,6 @@ def send_story_message(user: models.User):
     Parameters:
         user: player whom send story
     """
-    bot.send_message(
-            chat_id=user.telegram_id,
-            text=user,
-    )
-    bot.send_message(
-            chat_id=user.telegram_id,
-            text=story.items(),
-    )
     message = story[user.story_branch][user.point]
     if message['img']:
         bot.send_photo(
