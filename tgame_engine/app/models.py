@@ -17,3 +17,16 @@ class User(Base):
     story_branch = Column(String, default=config['start']['brunch'])
     point = Column(Integer, default=config['start']['point'])
     last_activity = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return """
+        telegram_id: {telegram_id},
+        story_branch: {story_branch},
+        point: {point},
+        last_activity: {last_activity}
+        """.format(
+            telegram_id=self.telegram_id,
+            story_branch=self.story_branch,
+            point=self.point,
+            last_activity=self.last_activity,
+        )
