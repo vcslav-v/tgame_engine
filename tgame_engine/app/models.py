@@ -19,8 +19,7 @@ class User(Base):
     last_activity = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return """
-        telegram_id: {telegram_id},
+        return """telegram_id: {telegram_id},
         story_branch: {story_branch},
         point: {point},
         last_activity: {last_activity}
