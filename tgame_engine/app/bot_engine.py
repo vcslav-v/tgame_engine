@@ -22,7 +22,7 @@ def send_story_message(user: models.User, point: str) -> int:
         user: player whom send story
         point: story point
     """
-    message = story.get_message(user, point)
+    message = story.get_message(point)
 
     if message['img']:
         bot.send_photo(
