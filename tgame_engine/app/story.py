@@ -33,4 +33,4 @@ def get_point(user: models.User, user_msg: str = None) -> str:
     """
     if not user_msg:
         return str(user.point)
-    return answers[user_msg]
+    return str(answers[user_msg])
