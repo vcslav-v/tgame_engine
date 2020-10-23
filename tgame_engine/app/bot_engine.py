@@ -14,7 +14,6 @@ def send_story_message(user: models.User):
     bot.send_message(
             chat_id=user.telegram_id,
             text=user,
-            reply_markup=make_keyboard(story['answers']),
     )
     message = story[user.story_branch][user.point]
     if message['img']:
