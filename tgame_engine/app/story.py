@@ -13,4 +13,4 @@ def get_story() -> dict:
     return story
 
 
-story = get_story
+story = get_story()
