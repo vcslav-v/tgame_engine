@@ -68,7 +68,7 @@ def get_users_for_typing() -> List[models.QueueMessage]:
         list of users
     """
     users = session.query(models.QueueMessage).filter(
-        models.QueueMessage.start_typing_time <= datetime.utcnow
+        models.QueueMessage.start_typing_time <= datetime.utcnow()
     ).all()
     return users
 
