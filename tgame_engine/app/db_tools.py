@@ -14,6 +14,7 @@ session = sessionmaker(bind=engine)()
 
 cfg = config.config
 
+
 def get_user(telegram_id: int) -> models.User:
     """Return user if one exist or add new user to db.
 
@@ -103,7 +104,7 @@ def push_story_message_to_queue(user: models.User, point: str):
     elif message['text']:
         pre_message = cfg['chat_actions']['typing']
 
-    message_time = datetime.utcnow + timedelta(seconds=int(message['timeout']))
+    message_time = datetime.utcnow() + timedelta(seconds=int(message['timeout']))
     start_typing_time = message_time - timedelta(
         seconds=cfg['chat_actions']['time_before']
     )
