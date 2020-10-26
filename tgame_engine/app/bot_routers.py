@@ -8,14 +8,14 @@ def hi_msg(msg):
     bot_engine.tell_story(user)
 
 
-@bot.message_handler(content_types=['text'])
-def text(msg):
-    user = db_tools.get_user(msg.from_user.id)
-    bot_engine.tell_story(user, msg.text)
-
-
 @bot.message_handler(commands=['restart'])
 def restart(msg):
     user = db_tools.get_user(msg.from_user.id)
     db_tools.restart_story(user)
     bot_engine.tell_story(user)
+
+
+@bot.message_handler(content_types=['text'])
+def text(msg):
+    user = db_tools.get_user(msg.from_user.id)
+    bot_engine.tell_story(user, msg.text)
