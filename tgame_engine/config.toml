@@ -1,3 +1,10 @@
 [start]
-brunch =
-point =
+brunch = 'введение_1'
+point = 0
+
+[chat_actions]
+time_before = 10
+typing = 'typing'
+upload_photo = 'upload_photo'
+record_audio = 'record_audio'
+upload_document = 'upload_document'

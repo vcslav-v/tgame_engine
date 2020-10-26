@@ -1,16 +1,13 @@
 """Bot app."""
 import telebot
-import json
 from flask import Flask, request
-from sqlalchemy import create_engine
-from sqlalchemy.orm.session import sessionmaker
+
 
 from app import config
 
 bot = telebot.TeleBot(config.BOT_TOKEN)
 app = Flask(__name__)
-engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-session = sessionmaker(bind=engine)()
+
 
 from app import bot_routers
 
