@@ -7,12 +7,12 @@ from typing import List
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
 
-from app import models, story
-from app.config import config
+from app import models, story, config
 
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 session = sessionmaker(bind=engine)()
 
+cfg = config.config
 
 def get_user(telegram_id: int) -> models.User:
     """Return user if one exist or add new user to db.
@@ -41,8 +41,8 @@ def restart_story(user: models.User):
     Parameters:
         user: player
     """
-    user.point = config['start']['point']
-    user.story_branch = config['start']['brunch']
+    user.point = cfg['start']['point']
+    user.story_branch = cfg['start']['brunch']
     user.last_activity = datetime.utcnow
     session.add(user)
     session.commit()
@@ -95,17 +95,17 @@ def push_story_message_to_queue(user: models.User, point: str):
     message = story.get_message(point)
 
     if message['img']:
-        pre_message = config['chat_actions']['upload_photo']
+        pre_message = cfg['chat_actions']['upload_photo']
     elif message['audio']:
-        pre_message = config['chat_actions']['record_audio']
+        pre_message = cfg['chat_actions']['record_audio']
     elif message['document']:
-        pre_message = config['chat_actions']['upload_document']
+        pre_message = cfg['chat_actions']['upload_document']
     elif message['text']:
-        pre_message = config['chat_actions']['typing']
+        pre_message = cfg['chat_actions']['typing']
 
     message_time = datetime.utcnow + timedelta(seconds=int(message['timeout']))
     start_typing_time = message_time - timedelta(
-        seconds=config['chat_actions']['time_before']
+        seconds=cfg['chat_actions']['time_before']
     )
 
     session.add(models.QueueMessage(
