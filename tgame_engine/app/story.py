@@ -1,6 +1,7 @@
 """Story loader."""
 import json
 from app import models
+from random import choice
 
 with open('story.json') as json_file:
     story = json.load(json_file)
@@ -34,3 +35,12 @@ def get_point(user: models.User, user_msg: str = None) -> str:
     if not user_msg:
         return str(user.point)
     return str(answers[user_msg])
+
+
+def get_unexpect_reaction() -> dict:
+    """Find unexpect reaction.
+
+    Returns:
+        message
+    """
+    return choice(story['unexpect'])

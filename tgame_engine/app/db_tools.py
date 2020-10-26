@@ -130,3 +130,37 @@ def delete_user_from_queue(queue_item: models.QueueMessage):
     """
     session.delete(queue_item)
     session.commit()
+
+
+def push_no_story_message_to_queue(user: models.User, message: dict):
+    """Put no story message to queue.
+
+    Parameters:
+        user: player
+        message: message dict
+    """
+
+    if message['img']:
+        pre_message = cfg['chat_actions']['upload_photo']
+    elif message['audio']:
+        pre_message = cfg['chat_actions']['record_audio']
+    elif message['document']:
+        pre_message = cfg['chat_actions']['upload_document']
+    elif message['text']:
+        pre_message = cfg['chat_actions']['typing']
+
+    message_time = datetime.utcnow() + timedelta(
+        seconds=int(message['timeout'])
+    )
+    start_typing_time = message_time - timedelta(
+        seconds=cfg['chat_actions']['time_before']
+    )
+
+    session.add(models.QueueMessage(
+        user=user,
+        start_typing_time=start_typing_time,
+        message_time=message_time,
+        pre_message=pre_message,
+        message=json.dumps(message),
+    ))
+    session.commit()

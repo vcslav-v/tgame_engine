@@ -12,7 +12,10 @@ def tell_story(user: models.User, user_answer: str = None):
     Parameters:
         user: player whom send story
     """
-    point = story.get_point(user, user_answer)
+    try:
+        point = story.get_point(user, user_answer)
+    except KeyError:
+        db_tools.push_no_story_message_to_queue(user, user_answer)
     db_tools.push_story_message_to_queue(user, point)
 
 
@@ -48,7 +51,10 @@ def send_message_from_queue():
                 text=message['text'],
                 reply_markup=reply_markup,
             )
-        db_tools.set_story_point(queue_item.user, queue_item.message_point)
+
+        if queue_item.message_point:
+            db_tools.set_story_point(queue_item.user, queue_item.message_point)
+
         db_tools.delete_user_from_queue(queue_item)
 
 
