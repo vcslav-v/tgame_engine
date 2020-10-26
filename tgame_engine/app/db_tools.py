@@ -44,7 +44,7 @@ def restart_story(user: models.User):
     """
     user.point = cfg['start']['point']
     user.story_branch = cfg['start']['brunch']
-    user.last_activity = datetime.utcnow
+    user.last_activity = datetime.utcnow()
     session.add(user)
     session.commit()
 
@@ -57,7 +57,7 @@ def set_story_point(user: models.User, point: str):
         point: story point
     """
     user.point = int(point)
-    user.last_activity = datetime.utcnow
+    user.last_activity = datetime.utcnow()
     session.add(user)
     session.commit()
 
@@ -104,7 +104,9 @@ def push_story_message_to_queue(user: models.User, point: str):
     elif message['text']:
         pre_message = cfg['chat_actions']['typing']
 
-    message_time = datetime.utcnow() + timedelta(seconds=int(message['timeout']))
+    message_time = datetime.utcnow() + timedelta(
+        seconds=int(message['timeout'])
+    )
     start_typing_time = message_time - timedelta(
         seconds=cfg['chat_actions']['time_before']
     )

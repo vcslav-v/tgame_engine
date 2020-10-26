@@ -22,7 +22,6 @@ def send_message_from_queue():
     for queue_item in queue:
         message = json.loads(queue_item.message)
         chat_id = queue_item.user.telegram_id
-        bot.send_message(chat_id=chat_id, text=message)
         reply_markup = make_keyboard(message['answers'])
 
         if message['img']:
