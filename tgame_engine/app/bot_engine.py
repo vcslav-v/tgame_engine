@@ -1,7 +1,9 @@
 """Story engine."""
+import json
+
 from telebot import types
 
-from app import bot, models, story, db_tools
+from app import bot, db_tools, models, story
 
 
 def tell_story(user: models.User, user_answer: str = None):
@@ -18,7 +20,7 @@ def send_message_from_queue():
     """Send message to users."""
     queue = db_tools.get_users_for_message()
     for queue_item in queue:
-        message = queue_item.message
+        message = json.loads(queue_item.message)
         chat_id = queue_item.user.telegram_id
         bot.send_message(chat_id=chat_id, text=message)
         reply_markup = make_keyboard(message['answers'])
