@@ -29,8 +29,7 @@ def text(msg):
 
 @bot.message_handler(content_types=['photo'])
 def photo(msg):
-    if msg.from_user.id == config.MASTER_USER:
-        bot.send_message(
-            chat_id=msg.from_user.id,
-            text=msg,
-        )
+    bot.send_message(
+        chat_id=msg.from_user.id,
+        text=msg,
+    )
