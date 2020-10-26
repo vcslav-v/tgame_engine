@@ -17,7 +17,7 @@ class User(Base):
     telegram_id = Column(Integer)
     story_branch = Column(String, default=config['start']['brunch'])
     point = Column(Integer, default=config['start']['point'])
-    last_activity = Column(DateTime, default=datetime.utcnow)
+    last_activity = Column(DateTime, default=datetime.utcnow())
     queue_message = relationship(
         'QueueMessage',
         uselist=False,
