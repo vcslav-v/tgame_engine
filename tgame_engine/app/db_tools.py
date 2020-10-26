@@ -81,7 +81,7 @@ def get_users_for_message() -> List[models.QueueMessage]:
         list of users
     """
     users = session.query(models.QueueMessage).filter(
-        models.QueueMessage.message_time <= datetime.utcnow
+        models.QueueMessage.message_time <= datetime.utcnow()
     ).all()
     return users
 
