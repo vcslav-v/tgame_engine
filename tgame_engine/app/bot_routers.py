@@ -27,7 +27,7 @@ def text(msg):
     bot_engine.tell_story(user, msg.text)
 
 
-@bot.message_handler(content_types=['photo', 'document', 'voice'])
+@bot.message_handler(content_types=['photo'])
 def photo(msg):
     if msg.from_user.id == config.MASTER_USER:
         bot.send_message(
