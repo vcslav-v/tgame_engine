@@ -19,7 +19,8 @@ def tell_story(user: models.User, user_answer: str = None):
             user,
             story.get_unexpect_reaction(),
         )
-    db_tools.push_story_message_to_queue(user, point)
+    else:
+        db_tools.push_story_message_to_queue(user, point)
 
 
 def send_message_from_queue():
