@@ -15,6 +15,14 @@ session = sessionmaker(bind=engine)()
 cfg = config.config
 
 
+def clean_queue():
+    """Clean queue."""
+    users = session.query(models.QueueMessage).all()
+    for user in users:
+        session.delete(user)
+    session.commit()
+
+
 def get_user(telegram_id: int) -> models.User:
     """Return user if one exist or add new user to db.
 

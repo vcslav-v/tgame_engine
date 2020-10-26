@@ -15,6 +15,12 @@ def restart(msg):
     bot_engine.tell_story(user)
 
 
+# for admin
+@bot.message_handler(commands=['clean'])
+def clean(msg):
+    db_tools.clean_queue()
+
+
 @bot.message_handler(content_types=['text'])
 def text(msg):
     user = db_tools.get_user(msg.from_user.id)
