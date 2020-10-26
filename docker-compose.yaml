@@ -10,6 +10,7 @@ services:
         - BOT_TOKEN=
         - DB=db
         - DB_PASSWORD=
+        - MASTER_USER=
       volumes:
         - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
         - ./story.json:/usr/src/app/tgame/story.json

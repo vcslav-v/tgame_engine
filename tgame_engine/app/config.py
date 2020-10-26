@@ -12,3 +12,4 @@ SQLALCHEMY_DATABASE_URI = (
         password=environ.get('DB_PASSWORD')
     )
 )
+MASTER_USER = environ.get('MASTER_USER')
