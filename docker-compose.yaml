@@ -8,7 +8,6 @@ services:
       environment:
         - APP_URL=
         - BOT_TOKEN=
-        - SQLALCHEMY_DATABASE_URI=
         - DB=db
         - DB_PASSWORD=
       volumes:
@@ -22,6 +21,25 @@ services:
         intranet:
           aliases:
             - bot-app
+
+    worker:
+      build: tgame_engine/
+      container_name: worker
+      command: poetry run worker
+      environment:
+        - APP_URL=
+        - BOT_TOKEN=
+        - DB=db
+        - DB_PASSWORD=
+      volumes:
+        - ./alembic_versions/:/usr/src/app/tgame/alembic/versions/
+        - ./story.json:/usr/src/app/tgame/story.json
+        - ./answ.json:/usr/src/app/tgame/answ.json
+      depends_on:
+        - bot
+      restart: always
+      networks:
+        intranet:
 
     nginx:
       image: nginx:latest
