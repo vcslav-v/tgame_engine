@@ -1,7 +1,7 @@
 """Story engine."""
 from telebot import types
 
-from app import bot, models, story, session
+from app import bot, models, story, db_tools
 
 
 def tell_story(user: models.User, user_answer: str = None):
@@ -12,7 +12,7 @@ def tell_story(user: models.User, user_answer: str = None):
     """
     point = story.get_point(user, user_answer)
     send_story_message(user, point)
-    set_story_point(user, point)
+    db_tools.set_story_point(user, point)
 
 
 def send_story_message(user: models.User, point: str) -> int:
@@ -62,15 +62,3 @@ def make_keyboard(buttons: dict) -> types.ReplyKeyboardMarkup:
     for button in buttons:
         keyboard.add(button)
     return keyboard
-
-
-def set_story_point(user: models.User, point: str):
-    """Remember where user in story.
-
-    Parameters:
-        user: player
-        point: story point
-    """
-    user.point = int(point)
-    session.add(user)
-    session.commit()

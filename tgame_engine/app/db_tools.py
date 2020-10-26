@@ -1,6 +1,7 @@
 """Database tools."""
 
 from app import models, session
+from app.config import config
 
 
 def get_user(telegram_id: int) -> models.User:
@@ -22,3 +23,27 @@ def get_user(telegram_id: int) -> models.User:
     session.add(user)
     session.commit()
     return user
+
+
+def restart_story(user: models.User):
+    """Restart story progress for user.
+
+    Parameters:
+        user: player
+    """
+    user.point = config['start']['point']
+    user.story_branch = config['start']['brunch']
+    session.add(user)
+    session.commit()
+
+
+def set_story_point(user: models.User, point: str):
+    """Remember where user in story.
+
+    Parameters:
+        user: player
+        point: story point
+    """
+    user.point = int(point)
+    session.add(user)
+    session.commit()
