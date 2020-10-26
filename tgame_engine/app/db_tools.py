@@ -1,5 +1,7 @@
 """Database tools."""
 
+import datetime
+
 from app import models, session
 from app.config import config
 
@@ -33,6 +35,7 @@ def restart_story(user: models.User):
     """
     user.point = config['start']['point']
     user.story_branch = config['start']['brunch']
+    user.last_activity = datetime.utcnow
     session.add(user)
     session.commit()
 
@@ -45,5 +48,6 @@ def set_story_point(user: models.User, point: str):
         point: story point
     """
     user.point = int(point)
+    user.last_activity = datetime.utcnow
     session.add(user)
     session.commit()
