@@ -149,13 +149,13 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
         message: message dict
     """
 
-    if message['img']:
+    if message.get('img'):
         pre_message = cfg['chat_actions']['upload_photo']
-    elif message['audio']:
+    elif message.get('audio'):
         pre_message = cfg['chat_actions']['record_audio']
-    elif message['document']:
+    elif message.get('document'):
         pre_message = cfg['chat_actions']['upload_document']
-    elif message['text']:
+    elif message.get('text'):
         pre_message = cfg['chat_actions']['typing']
 
     message_time = datetime.utcnow() + timedelta(
