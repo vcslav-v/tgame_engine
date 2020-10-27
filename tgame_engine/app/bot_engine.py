@@ -13,7 +13,8 @@ def tell_story(user: models.User, user_answer: str = None):
         user: player whom send story
     """
     user_marker = db_tools.get_marker_user_in_queue(user)
-    bot.send_message(user.telegram_id, user_marker)
+    if user_marker:
+        bot.send_message(user.telegram_id, user_marker)
     if user_marker:
         bot.send_message(user.telegram_id, story.get_marker_reaction(user_marker))
         db_tools.push_no_story_message_to_queue(
