@@ -24,7 +24,8 @@ def clean(msg):
 @bot.message_handler(content_types=['text'])
 def text(msg):
     user = db_tools.get_user(msg.from_user.id)
-    bot_engine.tell_story(user, msg.text)
+    if not user.is_queue_overflow():
+        bot_engine.tell_story(user, msg.text)
 
 
 @bot.message_handler(content_types=['photo'])

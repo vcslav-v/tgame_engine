@@ -1,7 +1,8 @@
 """SQLAlchemy models."""
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, JSON
+from sqlalchemy import (JSON, Boolean, Column, DateTime, ForeignKey, Integer,
+                        String)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -20,7 +21,6 @@ class User(Base):
     last_activity = Column(DateTime, default=datetime.utcnow())
     queue_message = relationship(
         'QueueMessage',
-        uselist=False,
         back_populates='user',
     )
 
@@ -35,6 +35,9 @@ class User(Base):
             point=self.point,
             last_activity=self.last_activity,
         )
+    
+    def is_queue_overflow(self):
+        return len(self.queue_message) >= 2
 
 
 class QueueMessage(Base):
@@ -49,3 +52,4 @@ class QueueMessage(Base):
     message = Column(JSON)
     message_point = Column(String)
     marker = Column(JSON)
+    is_story = Column(Boolean, default=True)

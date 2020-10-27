@@ -171,6 +171,7 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
         message_time=message_time,
         pre_message=pre_message,
         message=json.dumps(message),
+        is_story=False,
     ))
     session.commit()
 
@@ -186,6 +187,6 @@ def get_marker_user_in_queue(user: models.User) -> dict:
     """
     queue_place = session.query(
         models.QueueMessage
-    ).filter_by(user=user).first()
-    if queue_place:
+    ).filter_by(user=user, is_story=True).first()
+    if queue_place and queue_place.marker:
         return json.loads(queue_place.marker)
