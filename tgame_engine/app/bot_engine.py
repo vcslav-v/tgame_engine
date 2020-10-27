@@ -38,8 +38,7 @@ def send_message_from_queue():
         chat_id = queue_item.user.telegram_id
         reply_markup = make_keyboard(message.get('answers'))
 
-
-        if message.get('img':
+        if message.get('img'):
             bot.send_photo(
                 chat_id=chat_id,
                 photo=message['img'],
