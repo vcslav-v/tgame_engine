@@ -71,6 +71,11 @@ def send_message_from_queue():
 
         db_tools.delete_user_from_queue(queue_item)
 
+        if message['link']:
+            db_tools.push_story_message_to_queue(
+                queue_item.user, message['link']
+            )
+
 
 def make_keyboard(buttons: dict) -> types.ReplyKeyboardMarkup:
     """Make telegram keyboard markup.
