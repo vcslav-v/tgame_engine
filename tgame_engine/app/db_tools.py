@@ -126,6 +126,7 @@ def push_story_message_to_queue(user: models.User, point: str):
         pre_message=pre_message,
         message=json.dumps(message),
         message_point=point,
+        marker=json.dumps(message['marker']),
     ))
     session.commit()
 
@@ -172,3 +173,19 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
         message=json.dumps(message),
     ))
     session.commit()
+
+
+def get_marker_user_in_queue(user: models.User) -> dict:
+    """Find and return marker if user in queue.
+
+    Parameters:
+        user: player
+
+    Returns:
+        marker or None
+    """
+    queue_place = session.query(
+        models.QueueMessage
+    ).filter_by(user=user).first()
+    if queue_place:
+        return json.loads(queue_place.marker)

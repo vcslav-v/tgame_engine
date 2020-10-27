@@ -48,3 +48,4 @@ class QueueMessage(Base):
     pre_message = Column(String, default=config['chat_actions']['typing'])
     message = Column(JSON)
     message_point = Column(String)
+    marker = Column(JSON)

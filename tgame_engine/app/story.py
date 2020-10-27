@@ -6,9 +6,6 @@ from random import choice
 with open('story.json') as json_file:
     story = json.load(json_file)
 
-with open('answ.json') as json_file:
-    answers = json.load(json_file)
-
 
 def get_message(story_point: str) -> dict:
     """Find story message from point.
@@ -32,9 +29,10 @@ def get_point(user: models.User, user_msg: str = None) -> str:
     Returns:
         story point
     """
+    point = str(user.point)
     if not user_msg:
-        return str(user.point)
-    return str(answers[user_msg])
+        return point
+    return str(story[point]['answers'][user_msg])
 
 
 def get_unexpect_reaction() -> dict:
@@ -44,3 +42,19 @@ def get_unexpect_reaction() -> dict:
         message
     """
     return choice(story['unexpect'])
+
+
+def get_marker_reaction(marker: dict = None):
+    """Find marker reaction.
+
+    Parameters:
+        marker: message marker
+
+    Returns:
+        message
+    """
+    if not marker:
+        return
+    reaction = marker.get('reaction')
+    if reaction:
+        return choice(story['reaction'][reaction])

@@ -12,15 +12,22 @@ def tell_story(user: models.User, user_answer: str = None):
     Parameters:
         user: player whom send story
     """
-    try:
-        point = story.get_point(user, user_answer)
-    except KeyError:
+    user_marker = db_tools.get_marker_user_in_queue()
+    if user_marker:
         db_tools.push_no_story_message_to_queue(
             user,
-            story.get_unexpect_reaction(),
+            story.get_marker_reaction(user_marker),
         )
     else:
-        db_tools.push_story_message_to_queue(user, point)
+        try:
+            point = story.get_point(user, user_answer)
+        except KeyError:
+            db_tools.push_no_story_message_to_queue(
+                user,
+                story.get_unexpect_reaction(),
+            )
+        else:
+            db_tools.push_story_message_to_queue(user, point)
 
 
 def send_message_from_queue():
