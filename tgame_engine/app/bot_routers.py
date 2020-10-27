@@ -32,5 +32,5 @@ def photo(msg):
     if msg.from_user.id == int(config.MASTER_USER):
         bot.send_message(
             chat_id=msg.from_user.id,
-            text=msg.json.photo,
+            text=msg.json['photo'],
         )
