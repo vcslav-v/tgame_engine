@@ -36,30 +36,28 @@ def send_message_from_queue():
     for queue_item in queue:
         message = json.loads(queue_item.message)
         chat_id = queue_item.user.telegram_id
-        try:
-            reply_markup = make_keyboard(message['answers'])
-        except KeyError:
-            reply_markup = None
+        reply_markup = make_keyboard(message.get('answers'))
 
-        if message['img']:
+
+        if message.get('img':
             bot.send_photo(
                 chat_id=chat_id,
                 photo=message['img'],
                 reply_markup=reply_markup,
             )
-        elif message['audio']:
+        elif message.get('audio'):
             bot.send_voice(
                 chat_id=chat_id,
                 voice=message['audio'],
                 reply_markup=reply_markup,
             )
-        elif message['document']:
+        elif message.get('document'):
             bot.send_document(
                 chat_id=chat_id,
                 data=message['document'],
                 reply_markup=reply_markup,
             )
-        elif message['text']:
+        elif message.get('text'):
             bot.send_message(
                 chat_id=chat_id,
                 text=message['text'],
@@ -69,20 +67,22 @@ def send_message_from_queue():
         if queue_item.message_point:
             db_tools.set_story_point(queue_item.user, queue_item.message_point)
 
-        if message['link']:
+        if message.get('link'):
             db_tools.push_story_message_to_queue(
-                queue_item.user, str(message['link'])
+                queue_item.user, str(message.get('link'))
             )
 
         db_tools.delete_user_from_queue(queue_item)
 
 
-def make_keyboard(buttons: dict) -> types.ReplyKeyboardMarkup:
+def make_keyboard(buttons: dict = None) -> types.ReplyKeyboardMarkup:
     """Make telegram keyboard markup.
 
     Returns:
         telegram keyboard markup
     """
+    if not buttons:
+        return
     keyboard = types.ReplyKeyboardMarkup(
         one_time_keyboard=True, resize_keyboard=True
     )
