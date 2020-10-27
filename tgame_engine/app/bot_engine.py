@@ -12,7 +12,7 @@ def tell_story(user: models.User, user_answer: str = None):
     Parameters:
         user: player whom send story
     """
-    user_marker = db_tools.get_marker_user_in_queue()
+    user_marker = db_tools.get_marker_user_in_queue(user)
     if user_marker:
         db_tools.push_no_story_message_to_queue(
             user,
