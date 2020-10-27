@@ -71,11 +71,10 @@ def send_message_from_queue():
 
         if message['link']:
             db_tools.push_story_message_to_queue(
-                queue_item.user, message['link']
+                queue_item.user, str(message['link'])
             )
 
         db_tools.delete_user_from_queue(queue_item)
-
 
 
 def make_keyboard(buttons: dict) -> types.ReplyKeyboardMarkup:
