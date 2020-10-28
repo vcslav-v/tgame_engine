@@ -34,7 +34,7 @@ def test():
 def patreon():
     data = json.loads(request.stream.read().decode('utf-8'))
     with open('hi.txt', 'w') as file:
-        file.write(data)
+        file.write(str(data))
     if data['data']['type'] == 'member':
         bot.send_message(config.MASTER_USER, data['data']['attributes']['email'])
         bot.send_message(config.MASTER_USER, data['data']['attributes']['patron_status'])
