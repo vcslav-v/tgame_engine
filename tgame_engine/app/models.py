@@ -24,6 +24,7 @@ class User(Base):
         'QueueMessage',
         back_populates='user',
     )
+    is_end = Column(Boolean, default=False)
 
     def __repr__(self):
         return """telegram_id: {telegram_id},

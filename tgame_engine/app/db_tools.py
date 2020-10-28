@@ -251,3 +251,9 @@ def delete_user(user: models.User):
     """
     session.delete(user)
     session.commit()
+
+
+def set_end(user: models.User):
+    user.is_end = True
+    session.add(user)
+    session.commit()

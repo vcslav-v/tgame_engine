@@ -30,11 +30,22 @@ def tell_story(user: models.User, user_answer: str = None):
             db_tools.push_story_message_to_queue(user, point)
 
 
+def get_action(json: str):
+    marker = json.loads(json)
+    return marker.get('action')
+
+
 def send_message_from_queue():
     """Send message to users."""
     queue = db_tools.get_users_for_message()
     for queue_item in queue:
         message = json.loads(queue_item.message)
+
+        if queue_item.marker:
+            action = get_action(queue_item.marker)
+            if action == 'end':
+                db_tools.set_end(queue_item.user)
+
         chat_id = queue_item.user.telegram_id
         reply_markup = make_keyboard(message.get('answers'))
 
