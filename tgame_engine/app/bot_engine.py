@@ -30,8 +30,8 @@ def tell_story(user: models.User, user_answer: str = None):
             db_tools.push_story_message_to_queue(user, point)
 
 
-def get_action(json: str):
-    marker = json.loads(json)
+def get_action(json_dump: str):
+    marker = json.loads(json_dump)
     return marker.get('action')
 
 
