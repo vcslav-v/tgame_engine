@@ -251,3 +251,52 @@ def delete_user(user: models.User):
     """
     session.delete(user)
     session.commit()
+
+
+def set_patreon_for_user(user: models.User, email: str):
+    """Connect patreon with user.
+
+    Parameters:
+        email: jpatreon email
+    """
+    patron = session.query(
+            models.Patron
+        ).filter_by(
+            email=email
+        ).first()
+    if patron:
+        patron.user = user
+    else:
+        patron = models.Patron(
+            email=email,
+            user=user,
+        )
+    session.add(patron)
+    session.commit()
+
+
+def set_patreon(data: dict):
+    """Set patreon change.
+
+    Parameters:
+        data: json from Patreon
+    """
+    if data['data']['type'] == 'member':
+        patron = session.query(
+            models.Patron
+        ).filter_by(
+            email=data['included'][0]['attributes']['email']
+        ).first()
+        if patron:
+            patron.is_patron = (
+                data['data']['attributes']['patron_status'] == 'active_patron'
+            )
+        else:
+            patron = models.Patron(
+                email=data['included'][0]['attributes']['email'],
+                is_patron=(
+                    data['data']['attributes']['patron_status'] == 'active_patron' # noqa E501
+                ),
+            )
+        session.add(patron)
+        session.commit()

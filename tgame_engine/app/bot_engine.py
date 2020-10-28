@@ -1,5 +1,6 @@
 """Story engine."""
 import json
+import re
 
 from telebot import types
 
@@ -12,6 +13,13 @@ def tell_story(user: models.User, user_answer: str = None):
     Parameters:
         user: player whom send story
     """
+    if is_email(user_answer):
+        db_tools.set_patreon_for_user(user, user_answer)
+        db_tools.push_no_story_message_to_queue(
+            user,
+            story.get_marker_reaction({'reaction': 'yes_email'}),
+        )
+
     user_marker = db_tools.get_marker_user_in_queue(user)
     if user_marker:
         db_tools.push_no_story_message_to_queue(
@@ -98,3 +106,7 @@ def send_typings():
             queue_item.user.telegram_id,
             queue_item.pre_message
         )
+
+
+def is_email(email: str) -> bool:
+    return re.match(r'[^@]+@[^@]+\.[^@]+', email) is not None
