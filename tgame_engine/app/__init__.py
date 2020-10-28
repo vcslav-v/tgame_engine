@@ -23,10 +23,18 @@ def getMessage():
     return 'ok', 200
 
 
+@app.route('/test/', methods=['GET'])
+def test():
+    with open('hi.txt', 'r') as file:
+        result = file.read()
+    return result
+
+
 @app.route('/patreon/', methods=['POST'])
 def patreon():
     data = json.loads(request.stream.read().decode('utf-8'))
-    bot.send_message(config.MASTER_USER, str(data))
+    with open('hi.txt', 'w') as file:
+        file.write(data)
     if data['data']['type'] == 'member':
         bot.send_message(config.MASTER_USER, data['data']['attributes']['email'])
         bot.send_message(config.MASTER_USER, data['data']['attributes']['patron_status'])
