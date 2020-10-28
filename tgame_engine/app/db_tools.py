@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import json
 from typing import List
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_
 from sqlalchemy.orm.session import sessionmaker
 
 from app import models, story, config
@@ -86,7 +86,10 @@ def get_users_for_typing() -> List[models.QueueMessage]:
     ).filter(
             models.QueueMessage.start_typing_time <= datetime.utcnow()
     ).filter(
-            models.QueueMessage.referal_need <= models.User.referal_quantity
+            or_(
+                models.QueueMessage.referal_need <= models.User.referal_quantity, # noqa E501
+                models.User.patron.is_patron
+            )
     ).all()
     return users
 
@@ -104,7 +107,10 @@ def get_users_for_message() -> List[models.QueueMessage]:
     ).filter(
             models.QueueMessage.message_time <= datetime.utcnow()
     ).filter(
-            models.QueueMessage.referal_need <= models.User.referal_quantity
+            or_(
+                models.QueueMessage.referal_need <= models.User.referal_quantity, # noqa E501
+                models.User.patron.is_patron
+            )
     ).all()
     return users
 
