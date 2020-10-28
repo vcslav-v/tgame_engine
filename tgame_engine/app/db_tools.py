@@ -97,10 +97,14 @@ def get_users_for_message() -> List[models.QueueMessage]:
     Returns:
         list of users
     """
-    users = session.query(models.QueueMessage).filter(
-        models.QueueMessage.message_time <= datetime.utcnow()
+    users = session.query(
+        models.QueueMessage,
+    ).join(
+        models.User
     ).filter(
-        models.QueueMessage.referal_need <= models.QueueMessage.user.referal_quantity # noqa E501
+            models.QueueMessage.message_time <= datetime.utcnow()
+    ).filter(
+            models.QueueMessage.referal_need <= models.User.referal_quantity
     ).all()
     return users
 
