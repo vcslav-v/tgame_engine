@@ -229,3 +229,13 @@ def add_referal(text: str):
     parent.referal_quantity += 1
     session.add(parent)
     session.commit()
+
+
+def delete_user(user: models.User):
+    """Delete user.
+
+    Parameters:
+        user: player
+    """
+    session.delete(user)
+    session.commit()

@@ -15,6 +15,13 @@ def restart(msg):
     bot_engine.tell_story(user)
 
 
+@bot.message_handler(commands=['hardreset'])
+def hard_reset(msg):
+    if msg.from_user.id == int(config.MASTER_USER):
+        user = db_tools.get_user(msg.from_user.id)
+        db_tools.delete_user(user)
+
+
 @bot.message_handler(commands=['clean'])
 def clean(msg):
     if msg.from_user.id == int(config.MASTER_USER):
