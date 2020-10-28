@@ -78,6 +78,8 @@ def get_users_for_typing() -> List[models.QueueMessage]:
     """
     users = session.query(models.QueueMessage).filter(
         models.QueueMessage.start_typing_time <= datetime.utcnow()
+    ).filter(
+        models.QueueMessage.referal_need <= models.QueueMessage.user.referal_quantity # noqa E501
     ).all()
     return users
 
@@ -90,6 +92,8 @@ def get_users_for_message() -> List[models.QueueMessage]:
     """
     users = session.query(models.QueueMessage).filter(
         models.QueueMessage.message_time <= datetime.utcnow()
+    ).filter(
+        models.QueueMessage.referal_need <= models.QueueMessage.user.referal_quantity # noqa E501
     ).all()
     return users
 
@@ -102,6 +106,13 @@ def push_story_message_to_queue(user: models.User, point: str):
         point: story point
     """
     message = story.get_message(point)
+
+    if '{share_url}' in message['text']:
+        message['text'].format(
+            share_url='https://t.me/{BOT_NAME}?start={telegram_id}'.format(
+                BOT_NAME=config.BOT_NAME,
+                telegram_id=user.telegram_id
+            ))
 
     if message['img']:
         pre_message = cfg['chat_actions']['upload_photo']
@@ -127,6 +138,7 @@ def push_story_message_to_queue(user: models.User, point: str):
         message=json.dumps(message),
         message_point=point,
         marker=json.dumps(message['marker']),
+        referal_need=message['marker'].get('referal_need') or 0,
     ))
     session.commit()
 
@@ -190,3 +202,27 @@ def get_marker_user_in_queue(user: models.User) -> dict:
     ).filter_by(user=user, is_story=True).first()
     if queue_place and queue_place.marker:
         return json.loads(queue_place.marker)
+
+
+def add_referal(text: str):
+    """Check and add referal.
+
+    Parameters:
+        text: start message text
+    """
+    parent_id = text[7:]
+    if not parent_id:
+        return
+    try:
+        parent_id = int(parent_id)
+    except ValueError:
+        return
+
+    parent = session.query(models.User).filter_by(
+        telegram_id=parent_id
+    ).first()
+    if not parent:
+        return
+    parent.referal_quantity += 1
+    session.add(parent)
+    session.commit()

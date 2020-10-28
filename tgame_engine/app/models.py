@@ -19,6 +19,7 @@ class User(Base):
     story_branch = Column(String, default=config['start']['brunch'])
     point = Column(Integer, default=config['start']['point'])
     last_activity = Column(DateTime, default=datetime.utcnow())
+    referal_quantity = Column(Integer, default=0)
     queue_message = relationship(
         'QueueMessage',
         back_populates='user',
@@ -35,7 +36,7 @@ class User(Base):
             point=self.point,
             last_activity=self.last_activity,
         )
-    
+
     def is_queue_overflow(self):
         return len(self.queue_message) >= 2
 
@@ -53,3 +54,4 @@ class QueueMessage(Base):
     message_point = Column(String)
     marker = Column(JSON)
     is_story = Column(Boolean, default=True)
+    referal_need = Column(Integer, default=0)

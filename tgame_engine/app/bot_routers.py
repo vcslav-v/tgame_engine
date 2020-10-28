@@ -5,6 +5,7 @@ from app import bot, db_tools, bot_engine, config
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
     user = db_tools.get_user(msg.from_user.id)
+    db_tools.add_referal(msg.text)
     bot_engine.tell_story(user)
 
 

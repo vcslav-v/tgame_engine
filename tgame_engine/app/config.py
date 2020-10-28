@@ -5,6 +5,7 @@ import toml
 config = toml.load('config.toml')
 
 BOT_TOKEN = environ.get('BOT_TOKEN')
+BOT_NAME = environ.get('BOT_NAME')
 APP_URL = environ.get('APP_URL')
 SQLALCHEMY_DATABASE_URI = (
     'postgresql+psycopg2://postgres:{password}@{db}/postgres'.format(
