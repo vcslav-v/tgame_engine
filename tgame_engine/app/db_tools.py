@@ -80,13 +80,13 @@ def get_users_for_typing() -> List[models.QueueMessage]:
         list of users
     """
     users = session.query(
-        models.QueueMessage
+        models.QueueMessage,
     ).join(
-        models.QueueMessage.user
+        models.User
     ).filter(
-        models.QueueMessage.referal_need <= models.QueueMessage.user.referal_quantity # noqa E501
+            models.QueueMessage.start_typing_time <= datetime.utcnow()
     ).filter(
-        models.QueueMessage.start_typing_time <= datetime.utcnow()
+            models.QueueMessage.referal_need <= models.User.referal_quantity
     ).all()
     return users
 
