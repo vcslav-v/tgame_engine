@@ -19,6 +19,7 @@ def tell_story(user: models.User, user_answer: str = None):
             user,
             story.get_marker_reaction({'reaction': 'yes_email'}),
         )
+        return
 
     user_marker = db_tools.get_marker_user_in_queue(user)
     if user_marker:
@@ -108,5 +109,7 @@ def send_typings():
         )
 
 
-def is_email(email: str) -> bool:
+def is_email(email: str = None) -> bool:
+    if not email:
+        return
     return re.match(r'[^@]+@[^@]+\.[^@]+', email) is not None

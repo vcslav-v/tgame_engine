@@ -285,7 +285,7 @@ def set_patreon(data: dict):
         patron = session.query(
             models.Patron
         ).filter_by(
-            email=data['included'][0]['attributes']['email']
+            email=data['data']['attributes']['email']
         ).first()
         if patron:
             patron.is_patron = (
@@ -293,7 +293,7 @@ def set_patreon(data: dict):
             )
         else:
             patron = models.Patron(
-                email=data['included'][0]['attributes']['email'],
+                email=data['data']['attributes']['email'],
                 is_patron=(
                     data['data']['attributes']['patron_status'] == 'active_patron' # noqa E501
                 ),
