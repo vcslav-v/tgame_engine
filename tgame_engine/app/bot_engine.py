@@ -40,8 +40,9 @@ def send_message_from_queue():
     queue = db_tools.get_users_for_message()
     for queue_item in queue:
         message = json.loads(queue_item.message)
-
+        bot.send_message(queue_item.user.telegram_id, queue_item.marker)
         if queue_item.marker:
+            bot.send_message(queue_item.user.telegram_id, str(json.loads(queue_item.marker)))
             action = get_action(queue_item.marker)
             if action == 'end':
                 db_tools.set_end(queue_item.user)
