@@ -23,11 +23,12 @@ def clean_queue():
     session.commit()
 
 
-def get_user(telegram_id: int) -> models.User:
+def get_user(telegram_id: int, text: str = None) -> models.User:
     """Return user if one exist or add new user to db.
 
     Parameters:
         telegram_id: telegram id
+        text: command text
 
     Returns:
         User object
@@ -38,6 +39,8 @@ def get_user(telegram_id: int) -> models.User:
     ).first()
     if user:
         return user
+    if text:
+        add_referal(text)
     user = models.User(telegram_id=telegram_id)
     session.add(user)
     session.commit()
