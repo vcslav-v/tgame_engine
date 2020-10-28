@@ -24,11 +24,6 @@ class User(Base):
         'QueueMessage',
         back_populates='user',
     )
-    patron = relationship(
-        'Patron',
-        uselist=False,
-        back_populates='user',
-    )
 
     def __repr__(self):
         return """telegram_id: {telegram_id},
@@ -60,13 +55,3 @@ class QueueMessage(Base):
     marker = Column(JSON)
     is_story = Column(Boolean, default=True)
     referal_need = Column(Integer, default=0)
-
-
-class Patron(Base):
-    """Patrons from patreons."""
-    __tablename__ = 'patrons'
-    id = Column(Integer, primary_key=True)  # noqa WPS125
-    email = Column(String, unique=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="patron")
-    is_patron = Column(Boolean, default=False)

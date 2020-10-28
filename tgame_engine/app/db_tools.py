@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import json
 from typing import List
 
-from sqlalchemy import create_engine, or_
+from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
 
 from app import models, story, config
@@ -86,10 +86,7 @@ def get_users_for_typing() -> List[models.QueueMessage]:
     ).filter(
             models.QueueMessage.start_typing_time <= datetime.utcnow()
     ).filter(
-            or_(
-                models.QueueMessage.referal_need <= models.User.referal_quantity, # noqa E501
-                models.User.patron.is_patron
-            )
+            models.QueueMessage.referal_need <= models.User.referal_quantity
     ).all()
     return users
 
@@ -107,10 +104,7 @@ def get_users_for_message() -> List[models.QueueMessage]:
     ).filter(
             models.QueueMessage.message_time <= datetime.utcnow()
     ).filter(
-            or_(
-                models.QueueMessage.referal_need <= models.User.referal_quantity, # noqa E501
-                models.User.patron.is_patron
-            )
+            models.QueueMessage.referal_need <= models.User.referal_quantity
     ).all()
     return users
 
@@ -257,52 +251,3 @@ def delete_user(user: models.User):
     """
     session.delete(user)
     session.commit()
-
-
-def set_patreon_for_user(user: models.User, email: str):
-    """Connect patreon with user.
-
-    Parameters:
-        email: jpatreon email
-    """
-    patron = session.query(
-            models.Patron
-        ).filter_by(
-            email=email
-        ).first()
-    if patron:
-        patron.user = user
-    else:
-        patron = models.Patron(
-            email=email,
-            user=user,
-        )
-    session.add(patron)
-    session.commit()
-
-
-def set_patreon(data: dict):
-    """Set patreon change.
-
-    Parameters:
-        data: json from Patreon
-    """
-    if data['data']['type'] == 'member':
-        patron = session.query(
-            models.Patron
-        ).filter_by(
-            email=data['data']['attributes']['email']
-        ).first()
-        if patron:
-            patron.is_patron = (
-                data['data']['attributes']['patron_status'] == 'active_patron'
-            )
-        else:
-            patron = models.Patron(
-                email=data['data']['attributes']['email'],
-                is_patron=(
-                    data['data']['attributes']['patron_status'] == 'active_patron' # noqa E501
-                ),
-            )
-        session.add(patron)
-        session.commit()
