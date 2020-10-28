@@ -133,6 +133,10 @@ def push_story_message_to_queue(user: models.User, point: str):
         seconds=cfg['chat_actions']['time_before']
     )
 
+    referal_need = message['marker'].get(
+        'referal_need'
+    ) if message['marker'] else 0
+
     session.add(models.QueueMessage(
         user=user,
         start_typing_time=start_typing_time,
@@ -141,7 +145,7 @@ def push_story_message_to_queue(user: models.User, point: str):
         message=json.dumps(message),
         message_point=point,
         marker=json.dumps(message['marker']),
-        referal_need=message['marker'].get('referal_need') or 0,
+        referal_need=referal_need or 0,
     ))
     session.commit()
 
