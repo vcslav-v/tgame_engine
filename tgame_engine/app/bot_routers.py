@@ -42,3 +42,12 @@ def photo(msg):
             chat_id=msg.from_user.id,
             text=msg.photo[-1].file_id,
         )
+
+
+@bot.message_handler(content_types=['voice'])
+def voice(msg):
+    if msg.from_user.id == int(config.MASTER_USER):
+        bot.send_message(
+            chat_id=msg.from_user.id,
+            text=msg.voice[-1].file_id,
+        )
