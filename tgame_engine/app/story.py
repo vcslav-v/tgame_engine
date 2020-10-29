@@ -32,7 +32,11 @@ def get_point(user: models.User, user_msg: str = None) -> str:
     point = str(user.point)
     if not user_msg:
         return point
-    return str(story[point]['answers'][user_msg])
+    try:
+        story_point = str(story[point]['answers'][user_msg])
+    except TypeError:
+        return point
+    return story_point
 
 
 def get_unexpect_reaction() -> dict:
