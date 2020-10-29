@@ -56,7 +56,6 @@ def voice(msg):
 @bot.message_handler(content_types=['document'])
 def doc(msg):
     if msg.from_user.id == int(config.MASTER_USER):
-        bot.
         bot.send_message(
             chat_id=msg.from_user.id,
             text=msg,
