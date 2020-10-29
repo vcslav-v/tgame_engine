@@ -61,8 +61,9 @@ def doc(msg):
             text=msg,
         )
 
+
 @bot.message_handler(content_types=['audio'])
-def doc(msg):
+def audio(msg):
     if msg.from_user.id == int(config.MASTER_USER):
         bot.send_message(
             chat_id=msg.from_user.id,
