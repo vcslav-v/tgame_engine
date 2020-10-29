@@ -40,9 +40,9 @@ def send_message_from_queue():
     queue = db_tools.get_users_for_message()
     for queue_item in queue:
         message = json.loads(queue_item.message)
-        marker = json.loads(queue_item.marker)
-        if marker:
-            if marker.get('action') == 'end':
+        if queue_item.marker:
+            marker = json.loads(queue_item.marker)
+            if marker and marker.get('action') == 'end':
                 db_tools.set_end(queue_item.user)
 
         chat_id = queue_item.user.telegram_id
