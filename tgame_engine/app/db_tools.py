@@ -20,8 +20,9 @@ def clean_queue(t_id: int):
     user = session.query(models.QueueMessage).filter_by(
         user_id=int(t_id)
     ).first()
-    session.delete(user)
-    session.commit()
+    if user:
+        session.delete(user)
+        session.commit()
 
 
 def get_user(telegram_id: int, text: str = None) -> models.User:
