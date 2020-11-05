@@ -239,7 +239,7 @@ def add_referal(text: str):
     """
     parent_id = text[7:]
     print(text)
-    parent_id(parent_id)
+    print(parent_id)
     if not parent_id:
         return
     try:
