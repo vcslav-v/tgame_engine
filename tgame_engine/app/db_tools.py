@@ -176,6 +176,13 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
         message: message dict
     """
 
+    if '{share_url}' in message['text']:
+        message['text'] = message['text'].format(
+            share_url='https://t.me/{BOT_NAME}?start={telegram_id}'.format(
+                BOT_NAME=config.BOT_NAME,
+                telegram_id=user.telegram_id
+            ))
+
     if message.get('img'):
         pre_message = cfg['chat_actions']['upload_photo']
     elif message.get('audio'):
@@ -257,3 +264,21 @@ def set_end(user: models.User):
     user.is_end = True
     session.add(user)
     session.commit()
+
+
+def get_quantity_players() -> int:
+    return session.query(models.User).count()
+
+
+def get_quantity_share() -> int:
+    users = session.query(models.User).filter(
+        models.User.referal_quantity > 0,
+    ).all()
+    quantity_share = 0
+    for user in users:
+        quantity_share += user.referal_quantity
+    return quantity_share
+
+
+def get_quantity_fin_players() -> int:
+    return session.query(models.User).filter_by(is_end=True).count()

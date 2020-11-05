@@ -108,3 +108,20 @@ def send_typings():
             queue_item.user.telegram_id,
             queue_item.pre_message
         )
+
+
+def stats(user: models.User):
+    """Send game stats.
+
+    Parameters:
+        user: admin
+    """
+    text = '''Игроков - {players}
+    Из них привели другие игроки - {share}
+    Закончили игру - {fin}
+    '''.format(
+        players=db_tools.get_quantity_players(),
+        share=db_tools.get_quantity_share(),
+        fin=db_tools.get_quantity_fin_players(),
+    )
+    bot.send_message(user.telegram_id, text)
