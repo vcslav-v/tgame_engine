@@ -15,11 +15,18 @@ def restart(msg):
     bot_engine.tell_story(user)
 
 
-@bot.message_handler(commands=['hardreset'])
+@bot.message_handler(commands=['hard_reset'])
 def hard_reset(msg):
     if msg.from_user.id == int(config.MASTER_USER):
         user = db_tools.get_user(msg.from_user.id)
         db_tools.delete_user(user)
+
+
+@bot.message_handler(commands=['add_friend'])
+def add_friend(msg):
+    if msg.from_user.id == int(config.MASTER_USER):
+        user = db_tools.get_user(msg.from_user.id)
+        db_tools.add_referal('start={t_id}'.format(t_id=user.telegram_id))
 
 
 @bot.message_handler(commands=['stats'])
