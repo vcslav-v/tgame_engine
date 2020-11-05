@@ -238,8 +238,6 @@ def add_referal(text: str):
         text: start message text
     """
     parent_id = text[7:]
-    print(text)
-    print(parent_id)
     if not parent_id:
         return
     try:
