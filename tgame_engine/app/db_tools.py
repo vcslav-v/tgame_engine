@@ -17,11 +17,14 @@ cfg = config.config
 
 def clean_queue(t_id: int):
     """Clean queue."""
-    user = session.query(models.QueueMessage).filter_by(
-        user_id=int(t_id)
+    user = session.query(models.User).filter_by(
+        telegram_id=int(t_id)
     ).first()
-    if user:
-        session.delete(user)
+    queue_place = session.query(models.QueueMessage).filter_by(
+        user=user,
+    ).first()
+    if queue_place:
+        session.delete(queue_place)
         session.commit()
 
 
