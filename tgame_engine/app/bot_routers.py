@@ -5,12 +5,14 @@ from app import bot, db_tools, bot_engine, config
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
     user = db_tools.get_user(msg.from_user.id, msg.text)
+    db_tools.clean_queue(msg.from_user.id)
     bot_engine.tell_story(user)
 
 
 @bot.message_handler(commands=['restart'])
 def restart(msg):
     user = db_tools.get_user(msg.from_user.id)
+    db_tools.clean_queue(msg.from_user.id)
     db_tools.restart_story(user)
     bot_engine.tell_story(user)
 
@@ -18,6 +20,7 @@ def restart(msg):
 @bot.message_handler(commands=['hard_reset'])
 def hard_reset(msg):
     if msg.from_user.id == int(config.MASTER_USER):
+        db_tools.clean_queue(msg.from_user.id)
         user = db_tools.get_user(msg.from_user.id)
         db_tools.delete_user(user)
 
@@ -26,7 +29,9 @@ def hard_reset(msg):
 def add_friend(msg):
     if msg.from_user.id == int(config.MASTER_USER):
         user = db_tools.get_user(msg.from_user.id)
+        db_tools.clean_queue(msg.from_user.id)
         db_tools.add_referal('start={t_id}'.format(t_id=user.telegram_id))
+        bot_engine.bot.send_message(user.telegram_id, 'Добавили реферала')
 
 
 @bot.message_handler(commands=['stats'])

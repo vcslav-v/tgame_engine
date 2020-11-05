@@ -15,11 +15,12 @@ session = sessionmaker(bind=engine)()
 cfg = config.config
 
 
-def clean_queue():
+def clean_queue(t_id: int):
     """Clean queue."""
-    users = session.query(models.QueueMessage).all()
-    for user in users:
-        session.delete(user)
+    user = session.query(models.QueueMessage).filter_by(
+        user_id=int(t_id)
+    ).first()
+    session.delete(user)
     session.commit()
 
 

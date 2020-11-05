@@ -116,12 +116,16 @@ def stats(user: models.User):
     Parameters:
         user: admin
     """
-    text = '''Игроков - {players}
+    text = '''
+    Игроков - {players}
     Из них привели другие игроки - {share}
     Закончили игру - {fin}
+
+    Вы привели - {referal_quantity}
     '''.format(
         players=db_tools.get_quantity_players(),
         share=db_tools.get_quantity_share(),
         fin=db_tools.get_quantity_fin_players(),
+        referal_quantity=user.referal_quantity,
     )
     bot.send_message(user.telegram_id, text)
