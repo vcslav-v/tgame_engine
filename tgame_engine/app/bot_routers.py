@@ -43,12 +43,6 @@ def stats(msg):
         bot_engine.stats(user)
 
 
-@bot.message_handler(commands=['clean'])
-def clean(msg):
-    if msg.from_user.id == int(config.MASTER_USER):
-        db_tools.clean_queue()
-
-
 @bot.message_handler(content_types=['text'])
 def text(msg):
     user = db_tools.get_user(msg.from_user.id)

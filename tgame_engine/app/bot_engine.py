@@ -104,10 +104,14 @@ def send_typings():
     """Send chat status to users."""
     queue = db_tools.get_users_for_typing()
     for queue_item in queue:
-        bot.send_chat_action(
-            queue_item.user.telegram_id,
-            queue_item.pre_message
-        )
+        try:
+            bot.send_chat_action(
+                queue_item.user.telegram_id,
+                queue_item.pre_message
+            )
+        except Exception:
+            db_tools.session.delete(queue_item)
+            db_tools.session.commit()
 
 
 def stats(user: models.User):
