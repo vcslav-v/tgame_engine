@@ -169,3 +169,8 @@ def check_command(user: models.User, message: str):
             except:
                 return
             user_info(user, tg_id_target)
+        elif message[4:7] == 'sgp':
+            point, tg_user_id = message[7:].strip().split('-')
+            target_user = db_tools.get_user(tg_user_id)
+            db_tools.set_story_point(target_user, point)
+
