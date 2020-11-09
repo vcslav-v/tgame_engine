@@ -140,8 +140,11 @@ def user_info(user: models.User, tg_id: int):
     if not target_user:
         return
     if target_user.queue_message:
-        message = target_user.queue_message.message
-        referal_need = target_user.queue_message.referal_need
+        place_queue = db_tools.session.query(models.QueueMessage).filter_by(
+            user=target_user,
+        ).first()
+        message = place_queue.message
+        referal_need = place_queue.referal_need
     else:
         message, referal_need = 'No', 'No'
 
