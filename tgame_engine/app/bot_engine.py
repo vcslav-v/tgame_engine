@@ -137,6 +137,14 @@ def stats(user: models.User):
 
 def user_info(user: models.User, tg_id: int):
     target_user = db_tools.get_user(tg_id)
+    if not target_user:
+        return
+    if target_user.queue_message:
+        message = target_user.queue_message.message
+        referal_need = target_user.queue_message.referal_need
+    else:
+        message, referal_need = 'No', 'No'
+
     text = '''
     Игрок - {tg_id}
     Сейчас на  - {point}
@@ -147,8 +155,8 @@ def user_info(user: models.User, tg_id: int):
         tg_id=target_user.telegram_id,
         point=target_user.point,
         referal_quantity=target_user.referal_quantity,
-        message = target_user.queue_message.message,
-        referal_need = target_user.queue_message.referal_need,
+        message = message,
+        referal_need = referal_need,
     )
     bot.send_message(user.telegram_id, text)
 
