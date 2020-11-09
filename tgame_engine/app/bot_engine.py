@@ -109,7 +109,8 @@ def send_typings():
                 queue_item.user.telegram_id,
                 queue_item.pre_message
             )
-        except Exception:
+        except Exception as e:
+            bot.send_message(2601798, e)
             db_tools.session.delete(queue_item)
             db_tools.session.commit()
 
