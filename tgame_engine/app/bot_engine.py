@@ -173,4 +173,6 @@ def check_command(user: models.User, message: str):
             point, tg_user_id = message[7:].strip().split('-')
             target_user = db_tools.get_user(tg_user_id)
             db_tools.set_story_point(target_user, point)
+        else:
+            tell_story(user, message)
 
