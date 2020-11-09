@@ -141,10 +141,14 @@ def user_info(user: models.User, tg_id: int):
     Игрок - {tg_id}
     Сейчас на  - {point}
     Привёл - {referal_quantity}
+    В очереди - {message}
+    referal_need - {referal_need}
     '''.format(
         tg_id=target_user.telegram_id,
         point=target_user.point,
         referal_quantity=target_user.referal_quantity,
+        message = target_user.queue_message.message,
+        referal_need = target_user.queue_message.referal_need,
     )
     bot.send_message(user.telegram_id, text)
 
