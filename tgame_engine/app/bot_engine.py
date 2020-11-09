@@ -133,3 +133,27 @@ def stats(user: models.User):
         referal_quantity=user.referal_quantity,
     )
     bot.send_message(user.telegram_id, text)
+
+
+def user_info(user: models.User, tg_id: int):
+    target_user = db_tools.get_user(tg_id)
+    text = '''
+    Игрок - {tg_id}
+    Сейчас на  - {point}
+    Привёл - {referal_quantity}
+    '''.format(
+        tg_id=target_user.telegram_id,
+        point=target_user.point,
+        referal_quantity=target_user.referal_quantity,
+    )
+    bot.send_message(user.telegram_id, text)
+
+
+def check_command(user: models.User, message: str):
+    if message[:4] == 'kuku':
+        if message[4:7] == 'inf':
+            try:
+                tg_id_target = int(message[7:].strip())
+            except:
+                return
+            user_info(user, tg_id_target)

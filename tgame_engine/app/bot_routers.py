@@ -46,7 +46,9 @@ def stats(msg):
 @bot.message_handler(content_types=['text'])
 def text(msg):
     user = db_tools.get_user(msg.from_user.id)
-    if not user.is_queue_overflow():
+    if msg.from_user.id == int(config.MASTER_USER):
+        bot_engine.check_command(user, msg.text)
+    elif not user.is_queue_overflow():
         bot_engine.tell_story(user, msg.text)
 
 
