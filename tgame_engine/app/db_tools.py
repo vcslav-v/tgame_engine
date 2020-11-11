@@ -162,7 +162,6 @@ def push_story_message_to_queue(user: models.User, point: str):
     if referal_need:
         referal_need = int(referal_need)
     session.commit()
-    session. 
     session.add(models.QueueMessage(
         user=user,
         start_typing_time=start_typing_time,
