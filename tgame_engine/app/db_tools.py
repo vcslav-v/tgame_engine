@@ -135,7 +135,7 @@ def get_users_for_message() -> List[models.QueueMessage]:
     return users
 
 
-def push_story_message_to_queue(user: models.User, point: str, share_url: str = None):
+def push_story_message_to_queue(user: models.User, point: str):
     """Put story message to queue.
 
     Parameters:
@@ -144,8 +144,10 @@ def push_story_message_to_queue(user: models.User, point: str, share_url: str = 
     """
     message = story.get_message(point)
     if '{share_url}' in message['text']:
-        message['text'] = message['text'].format(
-            share_url=share_url)
+        message['text'] = cfg['format']['share_url'].format(
+            BOT_NAME=config.BOT_NAME,
+            tg_id = user.telegram_id,
+        )
 
     if message['img']:
         pre_message = cfg['chat_actions']['upload_photo']
