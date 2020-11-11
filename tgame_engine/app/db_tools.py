@@ -58,6 +58,7 @@ def get_user(telegram_id: int, text: str = None) -> models.User:
     try:
         session.flush()
     except Exception as e:
+        session.rollback()
         print(e)
     session.commit()
     return user
