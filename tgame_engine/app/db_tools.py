@@ -14,6 +14,8 @@ session = sessionmaker(bind=engine)()
 
 cfg = config.config
 
+share_url = cfg['format']['share_url'].format(BOT_NAME=config.BOT_NAME)
+
 
 def clean_queue(t_id: int = None):
     """Clean queue."""
@@ -135,6 +137,10 @@ def get_users_for_message() -> List[models.QueueMessage]:
     return users
 
 
+def format_message(text, tg_id):
+    result = text.format(share_url=share_url+tg_id)
+    return result
+
 def push_story_message_to_queue(user: models.User, point: str):
     """Put story message to queue.
 
@@ -143,11 +149,9 @@ def push_story_message_to_queue(user: models.User, point: str):
         point: story point
     """
     message = story.get_message(point)
+    
     if '{share_url}' in message['text']:
-        message['text'] = cfg['format']['share_url'].format(
-            BOT_NAME=config.BOT_NAME,
-            tg_id = user.telegram_id,
-        )
+        message['text'] = format_message(message['text'], str(user.telegram_id))
 
     if message['img']:
         pre_message = cfg['chat_actions']['upload_photo']

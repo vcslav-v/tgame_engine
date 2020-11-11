@@ -10,4 +10,4 @@ record_audio = 'record_audio'
 upload_document = 'upload_document'
 
 [format]
-share_url = 'https://t.me/{BOT_NAME}?start={tg_id}'
+share_url = 'https://t.me/{BOT_NAME}?start='
