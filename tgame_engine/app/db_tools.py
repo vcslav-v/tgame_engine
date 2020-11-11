@@ -57,6 +57,7 @@ def get_user(telegram_id: int, text: str = None) -> models.User:
     try:
         session.flush()
     except Exception as e:
+        session.close()
         print(e)
     session.commit()
     return user
@@ -75,7 +76,7 @@ def restart_story(user: models.User):
     try:
         session.flush()
     except Exception as e:
-        
+        session.close()
         print(e)
     session.commit()
 
@@ -93,7 +94,7 @@ def set_story_point(user: models.User, point: str):
     try:
         session.flush()
     except Exception as e:
-        
+        session.close()
         print(e)
     session.commit()
 
@@ -185,7 +186,7 @@ def push_story_message_to_queue(user: models.User, point: str):
     try:
         session.flush()
     except Exception as e:
-        
+        session.close()
         print(e)
     session.commit()
 
@@ -241,7 +242,7 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
     try:
         session.flush()
     except Exception as e:
-        
+        session.close()
         print(e)
     session.commit()
 
@@ -286,7 +287,7 @@ def add_referal(text: str):
     try:
         session.flush()
     except Exception as e:
-        
+        session.close()
         print(e)
     session.commit()
 
@@ -307,7 +308,7 @@ def set_end(user: models.User):
     try:
         session.flush()
     except Exception as e:
-        
+        session.close()
         print(e)
     session.commit()
 
