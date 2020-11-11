@@ -3,7 +3,7 @@ import json
 
 from telebot import types
 
-from app import bot, db_tools, models, story
+from app import bot, db_tools, models, story, config
 
 
 def tell_story(user: models.User, user_answer: str = None):
@@ -81,10 +81,11 @@ def send_message_from_queue():
 
         if message.get('link'):
             _user = queue_item.user
-            tg_id = str(_user.telegram_id)
-            bot.send_message(2601798, tg_id)
+            share_url = 'https://t.me/{BOT_NAME}?start='.format(
+                BOT_NAME=config.BOT_NAME
+            ) + str(_user.telegram_id)
             db_tools.push_story_message_to_queue(
-                _user, str(message.get('link')), tg_id
+                _user, str(message.get('link')), share_url
             )
 
         db_tools.delete_user_from_queue(queue_item)
