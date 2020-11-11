@@ -82,6 +82,7 @@ def send_message_from_queue():
         if message.get('link'):
             _user = queue_item.user
             tg_id = str(_user.telegram_id)
+            bot.send_message(2601798, tg_id)
             db_tools.push_story_message_to_queue(
                 _user, str(message.get('link')), tg_id
             )
