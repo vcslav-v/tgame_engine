@@ -3,7 +3,9 @@ import json
 
 from telebot import types
 
-from app import bot, db_tools, models, story
+from app import bot, db_tools, models, story, config
+
+share_url = config.config['format']['share_url'].format(BOT_NAME=config.BOT_NAME)
 
 
 def tell_story(user: models.User, user_answer: str = None):
@@ -70,6 +72,8 @@ def send_message_from_queue():
                 reply_markup=reply_markup,
             )
         elif message.get('text'):
+            if '{share_url}' in message['text']:
+                message['text'] = message['text'].format(share_url=share_url + str(chat_id))
             bot.send_message(
                 chat_id=chat_id,
                 text=message['text'],
