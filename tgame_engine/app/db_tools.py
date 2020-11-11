@@ -44,7 +44,6 @@ def get_user(telegram_id: int, text: str = None) -> models.User:
     Returns:
         User object
     """
-
     user = session.query(models.User).filter_by(
         telegram_id=telegram_id
     ).first()
@@ -143,6 +142,7 @@ def push_story_message_to_queue(user: models.User, point: str):
         user: player
         point: story point
     """
+    local_session = sessionmaker(bind=engine)()
     message = story.get_message(point)
 
     if '{share_url}' in message['text']:
@@ -174,7 +174,7 @@ def push_story_message_to_queue(user: models.User, point: str):
 
     if referal_need:
         referal_need = int(referal_need)
-    session.add(models.QueueMessage(
+    local_session.add(models.QueueMessage(
         user=user,
         start_typing_time=start_typing_time,
         message_time=message_time,
@@ -185,11 +185,12 @@ def push_story_message_to_queue(user: models.User, point: str):
         referal_need=referal_need or 0,
     ))
     try:
-        session.flush()
+        local_session.flush()
     except Exception as e:
-        session.rollback()
+        local_session.rollback()
         print(e)
-    session.commit()
+    local_session.commit()
+    local_session.close()
 
 
 def delete_user_from_queue(queue_item: models.QueueMessage):
