@@ -37,7 +37,10 @@ def get_action(json_dump: str):
 
 def send_message_from_queue():
     """Send message to users."""
-    queue = db_tools.get_users_for_message()
+    try:
+        queue = db_tools.get_users_for_message()
+    except:
+        return
     for queue_item in queue:
         message = json.loads(queue_item.message)
         if queue_item.marker:
@@ -102,15 +105,17 @@ def make_keyboard(buttons: dict = None) -> types.ReplyKeyboardMarkup:
 
 def send_typings():
     """Send chat status to users."""
-    queue = db_tools.get_users_for_typing()
+    try:
+        queue = db_tools.get_users_for_typing()
+    except:
+        return
     for queue_item in queue:
         try:
             bot.send_chat_action(
                 queue_item.user.telegram_id,
                 queue_item.pre_message
             )
-        except Exception as e:
-            bot.send_message(2601798, e)
+        except Exception:
             db_tools.session.delete(queue_item)
             db_tools.session.commit()
 
@@ -137,7 +142,10 @@ def stats(user: models.User):
 
 
 def user_info(user: models.User, tg_id: int):
-    target_user = db_tools.get_user(tg_id)
+    try:
+        target_user = db_tools.get_user(tg_id)
+    except:
+        return
     if not target_user:
         return
     if target_user.queue_message:
@@ -175,7 +183,10 @@ def check_command(user: models.User, message: str):
             user_info(user, tg_id_target)
         elif message[4:7] == 'sgp':
             point, tg_user_id = message[7:].strip().split('-')
-            target_user = db_tools.get_user(tg_user_id)
+            try:
+                target_user = db_tools.get_user(tg_user_id)
+            except:
+                return
             db_tools.set_story_point(target_user, point)
     else:
         tell_story(user, message)
