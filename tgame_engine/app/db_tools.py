@@ -53,8 +53,12 @@ def get_user(telegram_id: int, text: str = None) -> models.User:
     if text:
         add_referal(text)
     user = models.User(telegram_id=telegram_id)
-    session.commit()
+    
     session.add(user)
+    try:
+        session.flush()
+    except Exception as e:
+        print(e)
     session.commit()
     return user
 
@@ -68,8 +72,11 @@ def restart_story(user: models.User):
     user.point = cfg['start']['point']
     user.story_branch = cfg['start']['brunch']
     user.last_activity = datetime.utcnow()
-    session.commit()
     session.add(user)
+    try:
+        session.flush()
+    except Exception as e:
+        print(e)
     session.commit()
 
 
@@ -82,8 +89,11 @@ def set_story_point(user: models.User, point: str):
     """
     user.point = int(point)
     user.last_activity = datetime.utcnow()
-    session.commit()
     session.add(user)
+    try:
+        session.flush()
+    except Exception as e:
+        print(e)
     session.commit()
 
 
@@ -161,7 +171,6 @@ def push_story_message_to_queue(user: models.User, point: str):
 
     if referal_need:
         referal_need = int(referal_need)
-    session.commit()
     session.add(models.QueueMessage(
         user=user,
         start_typing_time=start_typing_time,
@@ -172,6 +181,10 @@ def push_story_message_to_queue(user: models.User, point: str):
         marker=json.dumps(message['marker']),
         referal_need=referal_need or 0,
     ))
+    try:
+        session.flush()
+    except Exception as e:
+        print(e)
     session.commit()
 
 
@@ -215,7 +228,6 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
     start_typing_time = message_time - timedelta(
         seconds=cfg['chat_actions']['time_before']
     )
-    session.commit()
     session.add(models.QueueMessage(
         user=user,
         start_typing_time=start_typing_time,
@@ -224,6 +236,10 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
         message=json.dumps(message),
         is_story=False,
     ))
+    try:
+        session.flush()
+    except Exception as e:
+        print(e)
     session.commit()
 
 
@@ -263,8 +279,11 @@ def add_referal(text: str):
     if not parent:
         return
     parent.referal_quantity += 1
-    session.commit()
     session.add(parent)
+    try:
+        session.flush()
+    except Exception as e:
+        print(e)
     session.commit()
 
 
@@ -280,8 +299,11 @@ def delete_user(user: models.User):
 
 def set_end(user: models.User):
     user.is_end = True
-    session.commit()
     session.add(user)
+    try:
+        session.flush()
+    except Exception as e:
+        print(e)
     session.commit()
 
 
