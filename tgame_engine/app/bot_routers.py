@@ -45,7 +45,6 @@ def stats(msg):
 @bot.message_handler(commands=['clean_queu'])
 def clean_queu(msg):
     if msg.from_user.id == int(config.MASTER_USER):
-        user = db_tools.get_user(msg.from_user.id)
         db_tools.clean_queue()
 
 
