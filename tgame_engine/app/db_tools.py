@@ -143,14 +143,14 @@ def push_story_message_to_queue(user: models.User, point: str):
         point: story point
     """
     message = story.get_message(point)
+    share_url = ''
     if '{share_url}' in message['text']:
-        txt = message['text']
+        tg_id = str(user.telegram_id)
         share_url = 'https://t.me/{BOT_NAME}?start='.format(
                 BOT_NAME=config.BOT_NAME
-            ) + str(user.telegram_id)
-        message['text'] = txt.format(
+            ) + tg_id
+        message['text'] = message['text'].format(
             share_url=share_url)
-        message['text'] = 'Hi! Тут одна симотичная девочка хочет с тобой пообщаться, зовут Настя - https://t.me/nastia_gamebot?start=' + str(user.telegram_id)
 
     if message['img']:
         pre_message = cfg['chat_actions']['upload_photo']
