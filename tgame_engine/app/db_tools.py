@@ -143,13 +143,14 @@ def push_story_message_to_queue(user: models.User, point: str):
         point: story point
     """
     message = story.get_message(point)
-
+    share_url = ''
     if '{share_url}' in message['text']:
-        message['text'] = message['text'].format(
-            share_url='https://t.me/{BOT_NAME}?start={telegram_id}'.format(
+        share_url = 'https://t.me/{BOT_NAME}?start={telegram_id}'.format(
                 BOT_NAME=config.BOT_NAME,
                 telegram_id=user.telegram_id
-            ))
+        )
+        message['text'] = message['text'].format(
+            share_url=share_url)
 
     if message['img']:
         pre_message = cfg['chat_actions']['upload_photo']
