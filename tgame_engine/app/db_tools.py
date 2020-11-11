@@ -57,7 +57,6 @@ def get_user(telegram_id: int, text: str = None) -> models.User:
     try:
         session.flush()
     except Exception as e:
-        session.rollback()
         print(e)
     session.commit()
     return user
@@ -76,7 +75,7 @@ def restart_story(user: models.User):
     try:
         session.flush()
     except Exception as e:
-        session.rollback()
+        
         print(e)
     session.commit()
 
@@ -94,7 +93,7 @@ def set_story_point(user: models.User, point: str):
     try:
         session.flush()
     except Exception as e:
-        session.rollback()
+        
         print(e)
     session.commit()
 
@@ -142,7 +141,6 @@ def push_story_message_to_queue(user: models.User, point: str):
         user: player
         point: story point
     """
-    local_session = sessionmaker(bind=engine)()
     message = story.get_message(point)
 
     if '{share_url}' in message['text']:
@@ -174,7 +172,7 @@ def push_story_message_to_queue(user: models.User, point: str):
 
     if referal_need:
         referal_need = int(referal_need)
-    local_session.add(models.QueueMessage(
+    session.add(models.QueueMessage(
         user=user,
         start_typing_time=start_typing_time,
         message_time=message_time,
@@ -185,12 +183,11 @@ def push_story_message_to_queue(user: models.User, point: str):
         referal_need=referal_need or 0,
     ))
     try:
-        local_session.flush()
+        session.flush()
     except Exception as e:
-        local_session.rollback()
+        
         print(e)
-    local_session.commit()
-    local_session.close()
+    session.commit()
 
 
 def delete_user_from_queue(queue_item: models.QueueMessage):
@@ -244,7 +241,7 @@ def push_no_story_message_to_queue(user: models.User, message: dict):
     try:
         session.flush()
     except Exception as e:
-        session.rollback()
+        
         print(e)
     session.commit()
 
@@ -289,7 +286,7 @@ def add_referal(text: str):
     try:
         session.flush()
     except Exception as e:
-        session.rollback()
+        
         print(e)
     session.commit()
 
@@ -310,7 +307,7 @@ def set_end(user: models.User):
     try:
         session.flush()
     except Exception as e:
-        session.rollback()
+        
         print(e)
     session.commit()
 
