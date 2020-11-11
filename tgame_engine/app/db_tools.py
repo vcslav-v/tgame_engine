@@ -11,6 +11,7 @@ from app import models, story, config
 
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 session = sessionmaker(bind=engine)()
+session.rollback()
 
 cfg = config.config
 
@@ -58,7 +59,6 @@ def get_user(telegram_id: int, text: str = None) -> models.User:
     try:
         session.flush()
     except Exception as e:
-        session.rollback()
         print(e)
     session.commit()
     return user
@@ -324,3 +324,5 @@ def get_quantity_share() -> int:
 
 def get_quantity_fin_players() -> int:
     return session.query(models.User).filter_by(is_end=True).count()
+
+clean_queue()
