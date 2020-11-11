@@ -81,8 +81,9 @@ def send_message_from_queue():
 
         if message.get('link'):
             _user = queue_item.user
+            tg_id = str(_user.telegram_id)
             db_tools.push_story_message_to_queue(
-                _user, str(message.get('link'))
+                _user, str(message.get('link'), tg_id)
             )
 
         db_tools.delete_user_from_queue(queue_item)

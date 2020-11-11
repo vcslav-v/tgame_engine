@@ -135,7 +135,7 @@ def get_users_for_message() -> List[models.QueueMessage]:
     return users
 
 
-def push_story_message_to_queue(user: models.User, point: str):
+def push_story_message_to_queue(user: models.User, point: str, tg_id: str = None):
     """Put story message to queue.
 
     Parameters:
@@ -145,7 +145,6 @@ def push_story_message_to_queue(user: models.User, point: str):
     message = story.get_message(point)
     share_url = ''
     if '{share_url}' in message['text']:
-        tg_id = str(user.telegram_id)
         share_url = 'https://t.me/{BOT_NAME}?start='.format(
                 BOT_NAME=config.BOT_NAME
             ) + tg_id
