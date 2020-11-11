@@ -145,10 +145,9 @@ def push_story_message_to_queue(user: models.User, point: str):
     message = story.get_message(point)
     share_url = ''
     if '{share_url}' in message['text']:
-        share_url = 'https://t.me/{BOT_NAME}?start={telegram_id}'.format(
-                BOT_NAME=config.BOT_NAME,
-                telegram_id=user.telegram_id
-        )
+        share_url = 'https://t.me/{BOT_NAME}?start='.format(
+                BOT_NAME=config.BOT_NAME
+            ) + str(user.telegram_id)
         message['text'] = message['text'].format(
             share_url=share_url)
 
