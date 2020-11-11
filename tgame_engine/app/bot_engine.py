@@ -80,8 +80,9 @@ def send_message_from_queue():
             db_tools.set_story_point(queue_item.user, queue_item.message_point)
 
         if message.get('link'):
+            _user = queue_item.user
             db_tools.push_story_message_to_queue(
-                queue_item.user, str(message.get('link'))
+                _user, str(message.get('link'))
             )
 
         db_tools.delete_user_from_queue(queue_item)
