@@ -15,17 +15,23 @@ session = sessionmaker(bind=engine)()
 cfg = config.config
 
 
-def clean_queue(t_id: int):
+def clean_queue(t_id: int = None):
     """Clean queue."""
-    user = session.query(models.User).filter_by(
-        telegram_id=int(t_id)
-    ).first()
-    queue_place = session.query(models.QueueMessage).filter_by(
-        user=user,
-    ).first()
-    if queue_place:
-        session.delete(queue_place)
-        session.commit()
+    if t_id:
+        user = session.query(models.User).filter_by(
+            telegram_id=int(t_id)
+        ).first()
+        queue_place = session.query(models.QueueMessage).filter_by(
+            user=user,
+        ).first()
+        if queue_place:
+            session.delete(queue_place)
+            session.commit()
+    else:
+        queue_places = session.query(models.QueueMessage).all()
+        for queue_place in queue_places:
+            session.delete(queue_place)
+    session.commit()
 
 
 def get_user(telegram_id: int, text: str = None) -> models.User:

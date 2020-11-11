@@ -4,7 +4,10 @@ from app import bot, db_tools, bot_engine, config
 
 @bot.message_handler(commands=['start'])
 def hi_msg(msg):
-    user = db_tools.get_user(msg.from_user.id, msg.text)
+    try:
+        user = db_tools.get_user(msg.from_user.id, msg.text)
+    except:
+        return
     bot_engine.tell_story(user)
 
 
@@ -38,6 +41,12 @@ def stats(msg):
     if msg.from_user.id == int(config.MASTER_USER):
         user = db_tools.get_user(msg.from_user.id)
         bot_engine.stats(user)
+
+@bot.message_handler(commands=['clean_queu'])
+def clean_queu(msg):
+    if msg.from_user.id == int(config.MASTER_USER):
+        user = db_tools.get_user(msg.from_user.id)
+        db_tools.clean_queue()
 
 
 @bot.message_handler(content_types=['text'])
