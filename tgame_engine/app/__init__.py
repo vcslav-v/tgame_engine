@@ -22,6 +22,11 @@ def getMessage():
     return 'ok', 200
 
 
+@app.route("/")
+def test():
+    return 'ok', 200
+
+
 url = 'https://' + config.APP_URL + config.BOT_TOKEN
 bot.remove_webhook()
 bot.set_webhook(url)
